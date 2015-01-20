@@ -1,0 +1,19 @@
+#set( $title = "Informations" )
+#parse("header.vm.included")
+
+<h3>Available information modules</h3>
+
+#if($components.isEmpty())
+  <p class="important">No module were found.</p>
+#else
+  <div class="table">
+    #foreach( $component in $components )
+      <p>
+        <span class="name"><a href="#springUrl($component.url)">$component.name</a></span>
+        <span class="description">$component.description</span>
+      </p>
+    #end
+  </div>
+#end
+
+#parse("footer.vm.included")

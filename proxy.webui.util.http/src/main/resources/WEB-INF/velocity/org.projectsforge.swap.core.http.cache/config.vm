@@ -1,0 +1,29 @@
+#set( $title = "Settings" )
+#parse("header.vm.included")
+
+<h3>Cache management of web contents</h3>
+
+<form method="post" action="#">
+  <p>
+  <label for="maxSizeOfInMemoryStoredContent">The size (in bytes) of the maximum amount of data stored in memory for a request or a response:</label>
+  <input type="text" id="maxSizeOfInMemoryStoredContent" name="maxSizeOfInMemoryStoredContent" value="$maxSizeOfInMemoryStoredContent"/>
+  </p>
+
+  <p>
+  <label for="maxAgeBeforeForcedRefresh">The maximum age (in ms) that a response is cached before a forced refresh is required:</label>
+  <input type="text" id="maxAgeBeforeForcedRefresh" name="maxAgeBeforeForcedRefresh" value="$maxAgeBeforeForcedRefresh"/>
+  </p>
+
+  <p>
+  <label for="maxAgeForForcedExpiration">The maximum age (in ms) to consider a response as expired:</label>
+  <input type="text" id="maxAgeForForcedExpiration" name="maxAgeForForcedExpiration" value="$maxAgeForForcedExpiration"/>
+  </p>
+
+  <p class="submit"><input type="submit" value="Save changes"/></p>
+</form>
+
+#if( $changed )
+  <div class="important">Change will be applied after restart of the proxy.</div>
+#end
+
+#parse("footer.vm.included")

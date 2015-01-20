@@ -1,0 +1,9 @@
+.metadata
+.settings
+.project
+.classpath
+pom.xml.*
+release.properties
+target
+starter/temp
+temp

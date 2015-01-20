@@ -1,0 +1,18 @@
+#set( $title = "Start page" )
+#parse("header.vm.included")
+
+#if($components.isEmpty())
+  <p>No component were found.</p>
+#else
+<h3>List of available components</h3>
+<div class="table">
+  #foreach( $component in $components )
+    <p>
+      <span class="name"><a href="#springUrl($component.url)">$component.name</a></span>
+      <span class="description">$component.description</span>
+    </p>
+  #end
+</div>
+#end
+
+#parse("footer.vm.included")

@@ -1,0 +1,28 @@
+#set( $title = "View cache content" )
+#parse("header.vm.included")
+
+<h3>Actions</h3>
+
+
+<div class="table">
+
+
+  <p>
+    <span class="name"><a href="#springUrl("$url/viewsnapshot")">View the current snapshot</a></span>
+    <span class="description">View the current snapshot. If no snapshot is currently defined, a new one is taken.</span>
+  </p>
+  <p>
+    <span class="name"><a href="#springUrl("$url/takesnapshot")">Take and view a new snapshot</a></span>
+    <span class="description">Take a new snapshot and view it.</span>
+  </p>
+    <p>
+    <span class="name"><a href="#springUrl("$url/clearsnapshot")">Clear cache</a></span>
+    <span class="description">Clear the snapshot content</span>
+  </p>
+</div>
+
+
+<div class="important">Don't forget to clear the snapshot when you don't need it anymore. It might allows to free a lot of memory.</div>
+
+
+#parse("footer.vm.included")

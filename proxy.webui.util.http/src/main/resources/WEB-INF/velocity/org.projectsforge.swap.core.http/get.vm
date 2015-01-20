@@ -1,0 +1,39 @@
+#set( $title = "Settings" )
+#parse("header.vm.included")
+
+<h3>Internet connection (HTTP client)</h3>
+
+<form method="post" action="#">
+  <p>
+  <label for="minThreads">Minimal number of connection threads (default: 10): </label>
+  <input type="text" id="minThreads" name="minThreads" value="$minThreads"/>
+  </p>
+
+  <p>
+  <label for="minThreads">Maximal number of connection threads (default: 200): </label>
+  <input type="text" id="maxThreads" name="maxThreads" value="$maxThreads"/>
+  </p>
+
+  <p>
+  <label for="maxConnectionsPerAddress">Maximal number of connections per address: </label>
+  <input type="text" id="maxConnectionsPerAddress" name="maxConnectionsPerAddress" value="$maxConnectionsPerAddress"/>
+  </p>
+
+  <p>
+  <label for="timeout">Connection timeout in ms: </label>
+  <input type="text" id="timeout" name="timeout" value="$timeout"/>
+  </p>
+
+  <p>
+  <label for="idleTimeout">Timeout for disconnecting idle connections in ms: </label>
+  <input type="text" id="idleTimeout" name="idleTimeout" value="$idleTimeout"/>
+  </p>
+
+  <p class="submit"><input type="submit" value="Save changes"/></p>
+</form>
+
+#if( $changed )
+  <p class="important">Change will be applied after restart of the proxy.</p>
+#end
+
+#parse("footer.vm.included")

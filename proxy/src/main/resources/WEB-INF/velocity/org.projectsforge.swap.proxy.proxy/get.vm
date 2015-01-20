@@ -1,0 +1,26 @@
+#set( $title = "Settings" )
+#parse("header.vm.included")
+
+<h3>Proxy</h3>
+
+<div class="form" action="#">
+  <form method="post">
+    <p>
+    <label for="minThreads">Minimal number of listening threads (default: 10): </label>
+    <input type="text" id="minThreads" name="minThreads" value="$minThreads"/>
+    </p>
+
+    <p>
+    <label for="minThreads">Maximal number of listening threads (default: 200): </label>
+    <input type="text" id="maxThreads" name="maxThreads" value="$maxThreads"/>
+    </p>
+
+    <p class="submit"><input type="submit" value="Save changes"/></p>
+  </form>
+</div>
+
+#if( $changed )
+  <div class="important">Change will be applied after restart of the proxy.</div>
+#end
+
+#parse("footer.vm.included")

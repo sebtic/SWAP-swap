@@ -1,0 +1,30 @@
+#set( $title = "View a snapshot of the cache content" )
+#parse("header.vm.included")
+
+<h3>Snapshot content</h3>
+
+
+#if($snapshot.isEmpty())
+  <p class="important">No requests were found.</p>
+#else
+  <div class="table">
+    #foreach( $response in $snapshot )
+      <p>        
+        <span class="name">
+          <a href="$url/downloadfromsnapshot?id=$velocityCount">$response.request</a>
+          <br>
+          <ul>
+          #foreach($name in $response.request.headers.headerNames)
+            <li>$name : $response.request.headers.getHeaderValue($name)</li>
+          #end
+          </ul>
+        </span>        
+      </p>
+    #end
+  </div>
+#end
+
+<div class="important">Don't forget to clear the snapshot when you don't need it anymore. It might allows to free a lot of memory.</div>
+
+
+#parse("footer.vm.included")

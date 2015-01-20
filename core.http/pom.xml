@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>swap</artifactId>
+		<groupId>org.projectsforge</groupId>
+		<version>0.17</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.projectsforge.swap</groupId>
+	<artifactId>core.http</artifactId>
+	<name>Utility classes to handle HTTP</name>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.projectsforge.swap</groupId>
+			<artifactId>core.environment</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectsforge.swap</groupId>
+			<artifactId>core.handlers</artifactId>
+		</dependency>
+		<!-- dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-client</artifactId> 
+			</dependency -->
+		<!-- >dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency-->
+		<dependency>
+			<artifactId>commons-collections</artifactId>
+			<groupId>commons-collections</groupId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

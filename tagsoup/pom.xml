@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.projectsforge.swap</groupId>
+	<artifactId>tagsoup</artifactId>
+	<name>TagSoup patched for SWAP</name>
+	<version>1.2.1-SWAP</version>
+	<packaging>jar</packaging>
+	<description>TagSoup is a SAX-compliant parser written in Java that, instead of parsing well-formed or valid XML, parses HTML as it is found in the wild: poor, nasty and brutish, though quite often far from short. TagSoup is designed for people who have to process this stuff using some semblance of a rational application design. By providing a SAX interface, it allows standard XML tools to be applied to even the worst HTML. TagSoup also includes a command-line processor that reads HTML files and can generate either clean HTML or well-formed XML that is a close approximation to XHTML.
+	Patched according to https://groups.google.com/forum/#!msg/tagsoup-friends/EfB6i12xBLw/fr_ekoerYT8J that is to say "Remove lines 2195 and 2476 (which look like &lt;attribute name='shape' default='rect'/&gt;) from src/definitions/html.tssl.
+	</description>
+	<url>http://home.ccil.org/~cowan/XML/tagsoup/</url>
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>John Cowan</name>
+		</developer>
+	</developers>
+
+	<parent>
+		<artifactId>swap</artifactId>
+		<groupId>org.projectsforge</groupId>
+		<version>0.17</version>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.4</source>
+					<target>${java.target}</target>
+					<debug>true</debug>
+					<failOnOver>false</failOnOver>
+					<optimize>true</optimize>
+					<showDeprecation>false</showDeprecation>
+					<showWarnings>false</showWarnings>
+					<verbose>false</verbose>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

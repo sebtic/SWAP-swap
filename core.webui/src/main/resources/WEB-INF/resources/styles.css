@@ -1,0 +1,256 @@
+#pageheader {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  padding-bottom: 1px;
+}
+
+#pageheader h1 {
+  background: white url(styles/banner.jpg) no-repeat 50% top;
+  height: 117px;
+  text-align: center;
+}
+
+#pageheader h1 span {
+  display: none;
+}
+
+#pageheader h2 {
+  color: black;
+  font-weight: bold;
+  font-style: normal;
+}
+
+#content a:link,#content a:visited {
+  font-weight: bold;
+  text-decoration: none;
+  color: blue;
+}
+
+body {
+  font: sans-serif;
+  color: black;
+  width: 80%;
+  margin: 0;
+  margin-left: 10%;
+  padding: 0;
+  background-color: lightyellow;
+}
+
+p {
+  margin-top: 0px;;
+  text-align: justify;
+}
+
+#pagefooter {
+  border-top: 1px blue solid;
+  margin-top: 10px;
+  padding-top: 5px;
+  background-color: white;
+}
+
+#pagefooter p {
+  text-align: center;
+  font-size: 75%;
+  margin: 0;
+  padding: 0;
+}
+
+#pagefooter a:link,#pagefooter a:visited {
+  font-weight: normal;
+  text-decoration: none;
+  color: blue;
+  font-size: 75%;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  background-color: lightgrey;
+}
+
+h3 {
+  color: black;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px red solid;
+  font-family: serif;
+  font-size: 130%;
+  margin-bottom: 5px;
+}
+
+#content {
+  margin: 0;
+  padding: 5px;
+  text-align: justify;
+  color: black;
+  background-color: lightyellow;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+table {
+  text-align: center;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+thead,tr th {
+  color: red;
+  font-weight: bold;
+}
+
+tfoot {
+  color: red;
+  font-weight: bold;
+}
+
+tr,td {
+  border: 1px solid lightblue;
+  padding: 5px;
+}
+
+div#rootline {
+  width: 100%;
+  background-color: #F5DEB3;
+  font-weight: normal;
+  font-size: 75%;
+  margin-bottom: 5px;
+}
+
+#rootline span {
+  display: none;
+}
+
+#rootline ul {
+  margin: 0;
+  padding: 0;
+  float: left;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rootline li {
+  list-style: none;
+  float: left;
+  margin: 5px 7px 5px 0px;
+  padding-left: 16px;
+  background: url("styles/rootline.png") no-repeat left;
+}
+
+#rootline li>a,#rootline li>a:link,#rootline li>a:visited {
+  color: black;
+  text-decoration: none;
+  display: block;
+  font-weight: bold;
+}
+
+#rootline li>a:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+.clear {
+  clear: both;
+}
+
+div.spacer {
+  padding: 0;
+  margin: 0;
+  height: 5px;
+}
+
+.important {
+  color: red;
+  font-weight: bold;
+}
+
+.title {
+  font-weight: bold;
+}
+
+p.important {
+  text-align: center;
+  margin: 10px;
+}
+
+form {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 90%
+}
+
+form  p {
+  margin: 0;
+  padding: 0;
+  display: table-row;
+  font-size: 90%;
+}
+
+label {
+  display: table-cell;
+  padding-bottom: 6px;
+  padding-top: 6px;
+  padding-right: 5px;
+  text-align: left;
+}
+
+input {
+  color: #781351;
+  background: #F5DEB3;
+  border: 1px solid blue;
+  display: table-cell;
+  padding: 5px;
+}
+
+.submit input {
+  color: #000;
+  background: #ffa20f;
+  border: 2px outset #d7b9c9;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.table {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 90%;
+  border: 1px solid black;
+  margin-top: 10px;
+  font-size: 90%;
+  border-collapse: collapse;
+}
+
+.table p {
+  display: table-row;
+  margin: 0;
+  padding: 0;
+}
+
+.table p:first-child {
+  background-color: red;
+}
+
+.table .name {
+  display: table-cell;
+  color: #781351;
+  background: #F5DEB3;
+  padding: 5px;
+  border: 1px solid black;
+  text-align: left;
+}
+
+.table .description {
+  display: table-cell;
+  color: black;
+  background: #F5DEB3;
+  padding: 5px;
+  border: 1px solid black;
+}
