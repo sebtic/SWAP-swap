@@ -13,22 +13,13 @@
 package org.projectsforge.swap.proxy.ui;
 
 import java.awt.AWTException;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.swing.JOptionPane;
 
 import org.projectsforge.swap.core.environment.impl.EnvironmentImpl;
@@ -37,9 +28,11 @@ import org.projectsforge.swap.proxy.webui.WebUIPropertyHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import dorkbox.systemTray.SystemTray;
+
 /**
  * The bean that manages UI.
- * 
+ *
  * @author Sébastien Aupetit
  */
 @Component("mainUI")
@@ -55,11 +48,13 @@ public class MainUI {
   /** The tray icon. */
   private TrayIcon trayIcon;
 
+  private SystemTray systemTray;
+
   /**
    * Advanced configuration.
    */
   private void advancedConfiguration() {
-    final List<String> args = new ArrayList<String>();
+    final List<String> args = new ArrayList<>();
     final String url = WebUIPropertyHolder.hostname.get();
     args.add(BrowserPropertyHolder.browserCommand.get());
     args.addAll(Arrays.asList(BrowserPropertyHolder.browserAgrs.get().replaceAll("\\{url\\}", url).split(" ")));
@@ -81,73 +76,24 @@ public class MainUI {
   }
 
   /**
-   * Finalizes the component.
-   */
-  @PreDestroy
-  public void finish() {
-    if (SystemTray.isSupported()) {
-      trayIcon.setPopupMenu(null);
-      SystemTray.getSystemTray().remove(trayIcon);
-    }
-  }
-
-  /**
    * Initializes the component.
-   * 
+   *
    * @throws AWTException
    *           the aWT exception
    */
   @PostConstruct
   public void init() throws AWTException {
-    if (SystemTray.isSupported()) {
-
-      // setup systray icon
-      Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/graphics/swap/icon.gif"));
-      final Dimension dim = SystemTray.getSystemTray().getTrayIconSize();
-      if ("linux".equalsIgnoreCase(System.getProperty("os.name"))) {
-        image = image.getScaledInstance(dim.width - 2, dim.height - 2, Image.SCALE_SMOOTH);
-      } else {
-        image = image.getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH);
-      }
-
-      trayIcon = new TrayIcon(image, "Smart Web Accessibility Proxy");
-      trayIcon.setImageAutoSize(false);
-
-      final PopupMenu popup = new PopupMenu();
-
-      final MenuItem basicConfigureItem = new MenuItem("Basic settings");
-      basicConfigureItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-          basicConfiguration();
-        }
-      });
-      popup.add(basicConfigureItem);
-
-      final MenuItem advancedConfigureItem = new MenuItem("Advanced settings");
-      advancedConfigureItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-          advancedConfiguration();
-        }
-      });
-      popup.add(advancedConfigureItem);
-
-      final MenuItem exitItem = new MenuItem("Exit");
-      exitItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-          environment.stop();
-        }
-      });
-      popup.add(exitItem);
-      trayIcon.setPopupMenu(popup);
-      // need to be ad the end on mac os x
-      SystemTray.getSystemTray().add(trayIcon);
-    } else {
-      logger.error("Can not initialize systay");
-      throw new IllegalStateException("Can not initialize systray");
+    systemTray = SystemTray.getSystemTray();
+    if (systemTray == null) {
+      logger.error("Unable to load SystemTray!");
+      throw new IllegalStateException("Unable to load SystemTray!");
     }
 
+    systemTray.setIcon(MainUI.class.getResource("/graphics/swap/icon.gif"));
+    systemTray.setStatus("Smart Web Accessibility Proxy");
+
+    systemTray.addMenuEntry("Basic settings", (t, m) -> basicConfiguration());
+    systemTray.addMenuEntry("Advanced settings", (t, m) -> advancedConfiguration());
+    systemTray.addMenuEntry("Exit", (t, m) -> environment.stop());
   }
 }

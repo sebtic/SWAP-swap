@@ -55,6 +55,11 @@
 			<artifactId>core.embeddedservlet3jetty</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.dorkbox</groupId>
+			<artifactId>SystemTray</artifactId> 
+			<version>2.20</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -76,7 +81,7 @@
 						<argument>org.projectsforge.swap.proxy.starter.Main</argument>
 					</arguments>
 				</configuration>
-			</plugin>		
+			</plugin>
 		</plugins>
 	</build>
 
