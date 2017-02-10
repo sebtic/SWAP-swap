@@ -1,0 +1,18 @@
+#set( $title = "Zones API" )
+#parse("header.vm.included")
+
+<h3>Available API methods</h3>
+
+#if($methods.isEmpty())
+  <p class="important">No methods were found.</p>
+#else
+  <div class="table">
+    #foreach( $method in $methods )
+      <p>
+        <span class="name">$method</span>
+      </p>
+    #end
+  </div>
+#end
+
+#parse("footer.vm.included")

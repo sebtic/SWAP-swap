@@ -60,7 +60,6 @@
 	</distributionManagement>
 
 	<modules>
-		<module>commons-beanutils</module>
 		<module>batik-css</module>
 		<module>tagsoup</module>
 
@@ -77,6 +76,8 @@
 		<module>core.mime.html</module>
 		<module>core.mime.css</module>
 
+		<module>core.expertinterface</module>
+
 		<module>proxy.handlers.mime</module>
 		<module>proxy.handlers.html</module>
 		<module>proxy.handlers.css</module>
@@ -86,10 +87,12 @@
 		<module>proxy.proxy</module>
 		<module>proxy.webui</module>
 		<module>proxy.webui.util.http</module>
+		<module>proxy.expertinterface</module>
 		<module>proxy</module>
 
 		<module>server.webui</module>
 		<module>server.remoting</module>
+		<module>server.expertinterface</module>
 		<module>server</module>
 
 		<module>starter</module>
@@ -144,6 +147,11 @@
 			<dependency>
 				<groupId>org.projectsforge.swap</groupId>
 				<artifactId>core.http</artifactId>
+				<version>${swapVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectsforge.swap</groupId>
+				<artifactId>core.expertinterface</artifactId>
 				<version>${swapVersion}</version>
 			</dependency>
 			<dependency>
@@ -203,6 +211,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.projectsforge.swap</groupId>
+				<artifactId>proxy.expertinterface</artifactId>
+				<version>${swapVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectsforge.swap</groupId>
 				<artifactId>proxy</artifactId>
 				<version>${swapVersion}</version>
 			</dependency>
@@ -219,6 +232,11 @@
 			<dependency>
 				<groupId>org.projectsforge.swap</groupId>
 				<artifactId>server.webui</artifactId>
+				<version>${swapVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectsforge.swap</groupId>
+				<artifactId>server.expertinterface</artifactId>
 				<version>${swapVersion}</version>
 			</dependency>
 			<dependency>
@@ -566,11 +584,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.projectsforge.swap</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>1.8.3-SWAP</version>
-			</dependency>
-			<dependency>
-				<groupId>org.projectsforge.swap</groupId>
 				<artifactId>batik-css</artifactId>
 				<version>1.7-SWAP</version>
 			</dependency>
@@ -613,6 +626,17 @@
 				<groupId>javax.transaction</groupId>
 				<artifactId>transaction-api</artifactId>
 				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>commons-beanutils</artifactId>
+				<groupId>commons-beanutils</groupId>
+				<version>1.9.3</version>
+			</dependency>
+			<!-- Jackson JSON Mapper -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>2.3.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -714,9 +738,6 @@
 						</tag>
 					</tags>
 					<maxmemory>512m</maxmemory>
-					<docfilessubdirs>true</docfilessubdirs>
-					<detectLinks>true</detectLinks>
-					<detectJavaApiLink>true</detectJavaApiLink>
 				</configuration>
 			</plugin>
 			<plugin>
