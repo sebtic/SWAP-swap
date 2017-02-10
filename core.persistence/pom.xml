@@ -15,13 +15,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>hibernate</groupId>
-			<artifactId>hibernate-tools</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<exclusions>
+			<!-- exclusions>
 				<exclusion>
 					<artifactId>javassist</artifactId>
 					<groupId>org.javassist</groupId>
@@ -29,7 +25,6 @@
 				<exclusion>
 					<groupId>org.jboss.logging</groupId>
 					<artifactId>jboss-logging</artifactId>
-
 				</exclusion>
 				<exclusion>
 					<artifactId>
@@ -37,16 +32,12 @@
 					</artifactId>
 					<groupId>org.jboss.spec.javax.transaction</groupId>
 				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.logging</groupId>
-			<artifactId>jboss-logging</artifactId>
+			</exclusions-->
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
@@ -91,7 +82,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.projectsforge.swap</groupId>
-			<artifactId>core.environment</artifactId>			
+			<artifactId>core.environment</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -112,9 +103,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-		</dependency>		
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

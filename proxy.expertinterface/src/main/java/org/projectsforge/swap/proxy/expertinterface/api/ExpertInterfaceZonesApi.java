@@ -8,7 +8,7 @@ import org.projectsforge.swap.core.expertinterface.ZoneForm;
 import org.projectsforge.swap.core.expertinterface.ZoneImage;
 import org.projectsforge.swap.core.expertinterface.ZoneLink;
 import org.projectsforge.swap.core.expertinterface.ZoneTable;
-import org.projectsforge.swap.expertinterface.remoting.Zones;
+import org.projectsforge.swap.core.expertinterface.remoting.Zones;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.projectsforge.swap.core.environment.Environment;
 import org.projectsforge.swap.core.expertinterface.Zone;
-import org.projectsforge.swap.expertinterface.remoting.Zones;
+import org.projectsforge.swap.core.expertinterface.remoting.Zones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;

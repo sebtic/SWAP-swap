@@ -6,9 +6,18 @@ import org.projectsforge.utils.propertyregistry.StringProperty;
 
 public class RemotingPropertyHolder implements PropertyHolder {
 
-  public static final StringProperty serverName = new StringProperty("remoting.server.name",
-      "localhost");
+  /** Hostname of the remoting server */
+  public static final StringProperty serverName = new StringProperty("remoting.server.name", "localhost");
 
-  public static final IntegerProperty serverPort = new IntegerProperty("remoting.server.port", 9080);
+  /** Port of the remoting server */
+  public static final IntegerProperty serverPort = new IntegerProperty("remoting.server.port", 9443);
+
+  /** Filename of the local key stores for remoting */
+  public static final StringProperty serverKeyStoreName = new StringProperty("remoting.server.keystore.name",
+      "remotingKeyStore");
+
+  /** Password of the local key stores for remoting */
+  public static final StringProperty serverKeyStorePassword = new StringProperty("remoting.server.keystore.password",
+      "A dummy password");
 
 }

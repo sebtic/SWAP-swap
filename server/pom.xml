@@ -37,9 +37,9 @@
 			<artifactId>core.environment</artifactId>
 		</dependency>
 		<dependency>
-      <groupId>org.projectsforge.swap</groupId>
-      <artifactId>core.embeddedservlet3jetty</artifactId>
-    </dependency>
+			<groupId>org.projectsforge.swap</groupId>
+			<artifactId>core.embeddedservlet3jetty</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.projectsforge.swap</groupId>
 			<artifactId>core.persistence</artifactId>
@@ -51,12 +51,18 @@
 		<dependency>
 			<groupId>org.projectsforge.swap</groupId>
 			<artifactId>server.webui</artifactId>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+		</dependency>
+		<!-- dependency> <groupId>org.projectsforge.swap</groupId> <artifactId>proxy.certificate</artifactId> 
+			</dependency -->
 	</dependencies>
 
 </project>

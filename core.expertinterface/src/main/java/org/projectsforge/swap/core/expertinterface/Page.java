@@ -8,12 +8,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
 /**
  * Java entity for HTML page storage in an efficient way
- * 
+ *
  * @author Vincent Rouillé
  */
 @Entity(name = "org.projectsforge.swap.expertinterface.Page")
@@ -24,6 +26,7 @@ public class Page implements Serializable {
    * Id computed by SHA1 hashing of url and html sha1(url + sha1(html))
    */
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private String id;
 
   /**
@@ -40,31 +43,53 @@ public class Page implements Serializable {
    * Content of the page
    */
   @Lob
-  @Column(nullable=false)
+  @Column(nullable = false)
   private String html;
 
   /**
    * Is the content of the page saved in anonymous mode
    */
   private boolean anonymous = false;
-  
+
+  public String getHtml() {
+    return html;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public Date getTime() {
+    return time;
+  }
+
+  // Getters and setters
+  public String getUrl() {
+    return url;
+  }
+
+  public boolean isAnonymous() {
+    return anonymous;
+  }
+
   /**
    * Prepare this entity for saving.
-   * 
+   *
    * html is hashed once to prevent the almost impossible : url1 + html1 = url2
    * + html2 with url1 != url2
-   * 
+   *
    * @return True if this Page is ready for being saved, false otherwise
    * @throws NoSuchAlgorithmException
    * @throws UnsupportedEncodingException
    */
-  public Boolean prepare() throws NoSuchAlgorithmException,
-      UnsupportedEncodingException {
-    if (url.isEmpty())
+  public Boolean prepare() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    if (url.isEmpty()) {
       return false;
-    if (html.isEmpty())
+    }
+    if (html.isEmpty()) {
       return false;
-    
+    }
+
     MessageDigest sha1Global = MessageDigest.getInstance("SHA-1");
     MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
     sha1Global.reset();
@@ -79,40 +104,19 @@ public class Page implements Serializable {
     }
 
     id = sb.toString();
-    
+
     return true;
   }
 
-  // Getters and setters
-  public String getUrl() {
-    return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
-  public String getHtml() {
-    return html;
+  public void setAnonymous(boolean anonymous) {
+    this.anonymous = anonymous;
   }
 
   public void setHtml(String html) {
     this.html = html;
   }
 
-  public String getId() {
-    return id;
-  }
-
-  public Date getTime() {
-    return time;
-  }
-
-  public boolean isAnonymous() {
-    return anonymous;
-  }
-
-  public void setAnonymous(boolean anonymous) {
-    this.anonymous = anonymous;
+  public void setUrl(String url) {
+    this.url = url;
   }
 }

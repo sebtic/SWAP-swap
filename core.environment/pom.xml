@@ -158,9 +158,5 @@
 			<artifactId>spring-beans</artifactId>
 			<groupId>org.springframework</groupId>
 		</dependency>
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>transaction-api</artifactId>
-		</dependency>
 	</dependencies>
 </project>

@@ -16,8 +16,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
 import org.projectsforge.swap.core.environment.impl.EnvironmentImpl;
 import org.projectsforge.swap.core.environment.provider.InMemoryXmlContextProvider;
 import org.projectsforge.swap.core.remoting.RemoteInterface;
@@ -26,34 +26,31 @@ import org.xml.sax.InputSource;
 
 /**
  * The proxy {@link EnvironmentImpl}.
- * 
+ *
  * @author Sébastien Aupetit
  */
 public class ProxyEnvironment extends EnvironmentImpl {
 
   /**
    * Instantiates a new proxy environment.
-   * 
-   * @param name the name
+   *
+   * @param name
+   *          the name
    */
   public ProxyEnvironment(final String name) {
     super(name);
     final InMemoryXmlContextProvider provider = getInMemoryXmlContextProvider();
-    setInMemoryXmlContextProvider(new InMemoryXmlContextProvider() {
-      @Override
-      public Collection<InputSource> getInputSources(
-          final org.projectsforge.swap.core.environment.Environment environment) {
-        final List<InputSource> result = new ArrayList<>();
-        result.addAll(provider.getInputSources(environment));
-        result.add(detectRemoteService());
-        return result;
-      }
+    setInMemoryXmlContextProvider(environment -> {
+      final List<InputSource> result = new ArrayList<>();
+      result.addAll(provider.getInputSources(environment));
+      result.add(detectRemoteService());
+      return result;
     });
   }
 
   /**
    * Detect remote service.
-   * 
+   *
    * @return the input source
    */
   private InputSource detectRemoteService() {
@@ -65,12 +62,16 @@ public class ProxyEnvironment extends EnvironmentImpl {
       out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
       out.println("<beans xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
 
-      for (final String className : annotationScanner.getClasses(AnnotationScanner.INCLUDE_INTERFACES, true,
-          new Class<?>[] { RemoteInterface.class }).keySet()) {
+      for (final String className : annotationScanner
+          .getClasses(AnnotationScanner.INCLUDE_INTERFACES, true, new Class<?>[] { RemoteInterface.class }).keySet()) {
         out.println("<bean id=\"/remoting/" + className
             + "\" class=\"org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean\">");
-        out.println("  <property name=\"serviceUrl\" value=\"http://${remoting.server.name}:${remoting.server.port}/remoting/"
-            + className + "\"/>");
+
+        // We setup a custom scheme handled by the httpInvokerRequestExecutor
+        // for both side authentication
+        out.println(
+            "  <property name=\"serviceUrl\" value=\"swaphttps://${remoting.server.name}:${remoting.server.port}/remoting/"
+                + className + "\"/>");
         out.println("  <property name=\"serviceInterface\" value =\"" + className + "\"/>");
         out.println("  <property name=\"httpInvokerRequestExecutor\" ref=\"remoting.httpInvokerRequestExecutor\"/>");
         out.println("</bean>");

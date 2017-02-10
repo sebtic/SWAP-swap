@@ -1,4 +1,4 @@
-package org.projectsforge.swap.expertinterface.remoting;
+package org.projectsforge.swap.core.expertinterface.remoting;
 
 import java.util.List;
 

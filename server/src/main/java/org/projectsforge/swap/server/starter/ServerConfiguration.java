@@ -16,10 +16,13 @@ import java.io.FileNotFoundException;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.server.ssl.SslSocketConnector;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.util.thread.ThreadPool;
 import org.projectsforge.swap.core.embeddedservlet3jetty.EmbeddedServlet3JettyFactory;
@@ -33,7 +36,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * The Class ServerConfiguration.
- * 
+ *
  * @author Sébastien Aupetit
  */
 @Configuration
@@ -51,21 +54,53 @@ public class ServerConfiguration {
   @Autowired
   private AnnotationScanner annotationScanner;
 
+  /** The remote ssl related store manager */
+  @Autowired
+  private RemotingServerKeyStoreComponent remotingServerKeyStore;
+
   /**
-   * Gets the http connection.
-   * 
-   * @return the http connection
+   * Gets the https connection. Setup the remoting secure connection to enforce
+   * client authentication
+   *
+   * @see RemotingServerKeyStoreComponent for management
+   * @return the https connection
    */
-  private SocketConnector getHttpConnection() {
-    final SocketConnector connector = new SocketConnector();
-    connector.setHost(ServerPropertyHolder.httpHost.get());
-    connector.setPort(ServerPropertyHolder.httpPort.get());
+  private SocketConnector getHttpsConnection() {
+
+    // SSL Context Factory
+    SslContextFactory sslContextFactory = new SslContextFactory();
+
+    // Force certificates validation
+    sslContextFactory.setValidateCerts(true);
+    sslContextFactory.setValidatePeerCerts(true);
+
+    // Force client authentication
+    sslContextFactory.setNeedClientAuth(true);
+
+    // Setupd stores
+    sslContextFactory.setCrlPath(remotingServerKeyStore.getCrlPath());
+    sslContextFactory.setKeyStorePath(remotingServerKeyStore.getKeyStorePath());
+    sslContextFactory.setKeyStorePassword(remotingServerKeyStore.getKeyStorePassword());
+    sslContextFactory.setTrustStore(remotingServerKeyStore.getTrustStorePath());
+    sslContextFactory.setTrustStorePassword(remotingServerKeyStore.getTrustStorePassword());
+    sslContextFactory.setCertAlias(remotingServerKeyStore.getKeyAlias());
+
+    // Disallow unsafe protocols and cipher
+    // SSLv2 & SSLv3 are VERY VERY VERY unsafe, it's like plaintext...
+    sslContextFactory.setExcludeProtocols("SSLv2Hello", "SSLv3");
+    sslContextFactory.setExcludeCipherSuites("SSL_RSA_WITH_DES_CBC_SHA", "SSL_DHE_RSA_WITH_DES_CBC_SHA",
+        "SSL_DHE_DSS_WITH_DES_CBC_SHA", "SSL_RSA_EXPORT_WITH_RC4_40_MD5", "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
+        "SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA", "SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA");
+
+    SslSocketConnector connector = new SslSocketConnector(sslContextFactory);
+    connector.setHost(ServerPropertyHolder.httpsHost.get());
+    connector.setPort(ServerPropertyHolder.httpsPort.get());
     return connector;
   }
 
   /**
    * Gets the thread pool.
-   * 
+   *
    * @return the thread pool
    */
   private ThreadPool getThreadPool() {
@@ -82,10 +117,12 @@ public class ServerConfiguration {
 
   /**
    * Server.
-   * 
+   *
    * @return the server
-   * @throws KeyStoreException the key store exception
-   * @throws FileNotFoundException the file not found exception
+   * @throws KeyStoreException
+   *           the key store exception
+   * @throws FileNotFoundException
+   *           the file not found exception
    */
   @Bean(destroyMethod = "stop", initMethod = "start")
   Server server() throws KeyStoreException, FileNotFoundException {
@@ -105,8 +142,7 @@ public class ServerConfiguration {
     server.setGracefulShutdown(1000);
 
     server.setThreadPool(getThreadPool());
-
-    server.setConnectors(new Connector[] { getHttpConnection() });
+    server.setConnectors(new Connector[] { getHttpsConnection() });
 
     return server;
   }
