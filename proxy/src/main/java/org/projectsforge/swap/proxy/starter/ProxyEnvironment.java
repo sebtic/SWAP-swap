@@ -62,19 +62,22 @@ public class ProxyEnvironment extends EnvironmentImpl {
       out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
       out.println("<beans xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
 
-      for (final String className : annotationScanner
-          .getClasses(AnnotationScanner.INCLUDE_INTERFACES, true, new Class<?>[] { RemoteInterface.class }).keySet()) {
-        out.println("<bean id=\"/remoting/" + className
-            + "\" class=\"org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean\">");
+      if (getContext().containsBean("remoting.httpInvokerRequestExecutor")) {
+        for (final String className : annotationScanner
+            .getClasses(AnnotationScanner.INCLUDE_INTERFACES, true, new Class<?>[] { RemoteInterface.class })
+            .keySet()) {
+          out.println("<bean id=\"/remoting/" + className
+              + "\" class=\"org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean\">");
 
-        // We setup a custom scheme handled by the httpInvokerRequestExecutor
-        // for both side authentication
-        out.println(
-            "  <property name=\"serviceUrl\" value=\"swaphttps://${remoting.server.name}:${remoting.server.port}/remoting/"
-                + className + "\"/>");
-        out.println("  <property name=\"serviceInterface\" value =\"" + className + "\"/>");
-        out.println("  <property name=\"httpInvokerRequestExecutor\" ref=\"remoting.httpInvokerRequestExecutor\"/>");
-        out.println("</bean>");
+          // We setup a custom scheme handled by the httpInvokerRequestExecutor
+          // for both side authentication
+          out.println(
+              "  <property name=\"serviceUrl\" value=\"swaphttps://${remoting.server.name}:${remoting.server.port}/remoting/"
+                  + className + "\"/>");
+          out.println("  <property name=\"serviceInterface\" value =\"" + className + "\"/>");
+          out.println("  <property name=\"httpInvokerRequestExecutor\" ref=\"remoting.httpInvokerRequestExecutor\"/>");
+          out.println("</bean>");
+        }
       }
       out.println("</beans>");
     }
