@@ -21,6 +21,7 @@ package org.projectsforge.swap.proxy.starter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.remoting.httpinvoker.HttpInvokerRequestExecutor;
 
 /**
@@ -29,21 +30,22 @@ import org.springframework.remoting.httpinvoker.HttpInvokerRequestExecutor;
  * @author Sébastien Aupetit
  */
 @Configuration
+@Profile("remoting")
 class RemotingConfiguration {
 
-  /** The client remoting key store to use for the invokerRequestexecutor */
-  @Autowired
-  RemotingClientKeyStore remotingKeyStore;
+	/** The client remoting key store to use for the invokerRequestexecutor */
+	@Autowired
+	RemotingClientKeyStore remotingKeyStore;
 
-  /**
-   * Invoker requestexecutor.
-   *
-   * @return the http invoker request executor
-   * @throws Exception
-   */
-  @Bean(name = "remoting.httpInvokerRequestExecutor")
-  HttpInvokerRequestExecutor invokerRequestexecutor() {
-    return new RemotingSSLHttpInvokerRequestExecutor(remotingKeyStore);
-  }
+	/**
+	 * Invoker requestexecutor.
+	 *
+	 * @return the http invoker request executor
+	 * @throws Exception
+	 */
+	@Bean(name = "remoting.httpInvokerRequestExecutor")
+	HttpInvokerRequestExecutor invokerRequestexecutor() {
+		return new RemotingSSLHttpInvokerRequestExecutor(remotingKeyStore);
+	}
 
 }
