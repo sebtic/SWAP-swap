@@ -12,9 +12,9 @@ cache:
     - .sdkman
 
 before_script:
-  - # allow caching sdkman downloads
+  # allow caching sdkman downloads
   - sudo rmdir /opt/sdkman/archives && mkdir -p .sdkman && sudo ln -s `pwd`/.sdkman /opt/sdkman/archives
-  - # allow caching maven downloads
+  # allow caching maven downloads
   - sudo rm -rf /home/user/.m2 && mkdir -p .m2 && sudo ln -s `pwd`/.m2 /home/user/.m2
   - sdkw install java
   - source "$SDKMAN_DIR/bin/sdkman-init.sh"
