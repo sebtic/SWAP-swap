@@ -5,12 +5,21 @@ stages:
   - test
   - deploy
 
+cache:
+  key: "ALL"
+  paths:
+    - .m2
+    - .sdkman
+
 before_script:
+  - # allow caching sdkman downloads
+  - sudo rmdir /opt/sdkman/archives && mkdir -p .sdkman && sudo ln -s `pwd`/.sdkman /opt/sdkman/archives
+  - # allow caching maven downloads
+  - sudo rm -rf /home/user/.m2 && mkdir -p .m2 && sudo ln -s `pwd`/.m2 /home/user/.m2
   - sdkw install java
-  - sdkw install maven
   - source "$SDKMAN_DIR/bin/sdkman-init.sh"
   # remove any previously deployed artifact
-  - rm -rf /home/user/.m2/repository/org/projectsforge/
+  - rm -rf .m2/repository/org/projectsforge/
   - mkdir -p ~/.ssh
   - ssh-keyscan -p 2223 static.projectsforge.org > ~/.ssh/known_hosts
   - eval $(ssh-agent -s)
@@ -22,7 +31,8 @@ build_job:
   only:
     - master
   script:
-    - mvn --batch-mode compile -Dmaven.test.skip=true -Djacoco.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
+    - sudo chmod +x mvnw
+    - ./mvnw --batch-mode compile -Dmaven.test.skip=true -Djacoco.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
   tags:
     - docker
 
@@ -36,7 +46,9 @@ build_merge_job:
     - git config user.email "gitlab@projectsforge.org"
     - git config user.name "GitLab CI"
     - git merge origin master --no-commit --no-ff
-    - mvn --batch-mode compile -Dmaven.test.skip=true -Djacoco.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
+    # allow caching sdkman downloads
+    - sudo chmod +x mvnw
+    - ./mvnw --batch-mode compile -Dmaven.test.skip=true -Djacoco.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
   tags:
     - docker
 
@@ -46,7 +58,8 @@ deploy_job:
   only:
     - master
   script:
-    - mvn --batch-mode deploy -Dmaven.test.skip=true -Djacoco.skip=true
+    - sudo chmod +x mvnw
+    - ./mvnw --batch-mode deploy -Dmaven.test.skip=true -Djacoco.skip=true
   tags:
     - docker
 
@@ -56,8 +69,9 @@ deploy_tags_job:
   only:
     - tags
   script:
-    - mvn --batch-mode org.codehaus.mojo:versions-maven-plugin:2.1:set -DnewVersion=$CI_BUILD_TAG -DgenerateBackupPoms=false
-    - mvn --batch-mode clean deploy -Dmaven.test.skip=true -Djacoco.skip=true 
+    - sudo chmod +x mvnw
+    - ./mvnw --batch-mode org.codehaus.mojo:versions-maven-plugin:2.1:set -DnewVersion=$CI_BUILD_TAG -DgenerateBackupPoms=false
+    - ./mvnw --batch-mode clean deploy -Dmaven.test.skip=true -Djacoco.skip=true 
   tags:
     - docker
 
