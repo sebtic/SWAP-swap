@@ -94,7 +94,6 @@ public class MainUI {
     systemTray.setStatus("Smart Web Accessibility Proxy");
 
     systemTray.getMenu().add(new MenuItem("Basic settings", e -> basicConfiguration()));
-    systemTray.getMenu().add(new MenuItem("Basic settings", e -> basicConfiguration()));
     systemTray.getMenu().add(new MenuItem("Advanced settings", e -> advancedConfiguration()));
     systemTray.getMenu().add(new MenuItem("Exit", e -> {
       environment.stop();
