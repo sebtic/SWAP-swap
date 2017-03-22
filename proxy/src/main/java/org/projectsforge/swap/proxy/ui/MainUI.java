@@ -28,6 +28,7 @@ import org.projectsforge.swap.proxy.webui.WebUIPropertyHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import dorkbox.systemTray.MenuItem;
 import dorkbox.systemTray.SystemTray;
 
 /**
@@ -38,65 +39,66 @@ import dorkbox.systemTray.SystemTray;
 @Component("mainUI")
 public class MainUI {
 
-	/** The environment. */
-	@Autowired
-	private EnvironmentImpl environment;
+  /** The environment. */
+  @Autowired
+  private EnvironmentImpl environment;
 
-	/** The logger. */
-	private final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(MainUI.class);
+  /** The logger. */
+  private final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(MainUI.class);
 
-	/** The tray icon. */
-	private TrayIcon trayIcon;
+  /** The tray icon. */
+  private TrayIcon trayIcon;
 
-	private SystemTray systemTray;
+  private SystemTray systemTray;
 
-	/**
-	 * Advanced configuration.
-	 */
-	private void advancedConfiguration() {
-		final List<String> args = new ArrayList<>();
-		final String url = WebUIPropertyHolder.hostname.get();
-		args.add(BrowserPropertyHolder.browserCommand.get());
-		args.addAll(Arrays.asList(BrowserPropertyHolder.browserAgrs.get().replaceAll("\\{url\\}", url).split(" ")));
-		try {
-			Runtime.getRuntime().exec(args.toArray(new String[0]));
-		} catch (final IOException e) {
+  /**
+   * Advanced configuration.
+   */
+  private void advancedConfiguration() {
+    final List<String> args = new ArrayList<>();
+    final String url = WebUIPropertyHolder.hostname.get();
+    args.add(BrowserPropertyHolder.browserCommand.get());
+    args.addAll(Arrays.asList(BrowserPropertyHolder.browserAgrs.get().replaceAll("\\{url\\}", url).split(" ")));
+    try {
+      Runtime.getRuntime().exec(args.toArray(new String[0]));
+    } catch (final IOException e) {
 
-			JOptionPane.showMessageDialog(null,
-					"Can not launch browser. Please specify a valid executable name with the parameter {url} for the URL.",
-					"Browser can not be executed", JOptionPane.ERROR_MESSAGE | JOptionPane.CLOSED_OPTION);
-		}
-	}
+      JOptionPane.showMessageDialog(null,
+          "Can not launch browser. Please specify a valid executable name with the parameter {url} for the URL.",
+          "Browser can not be executed", JOptionPane.ERROR_MESSAGE | JOptionPane.CLOSED_OPTION);
+    }
+  }
 
-	/**
-	 * Basic configuration.
-	 */
-	private synchronized void basicConfiguration() {
-		new BasicConfigurationDialog(environment).setVisible(true);
-	}
+  /**
+   * Basic configuration.
+   */
+  private synchronized void basicConfiguration() {
+    new BasicConfigurationDialog(environment).setVisible(true);
+  }
 
-	/**
-	 * Initializes the component.
-	 *
-	 * @throws AWTException
-	 *           the aWT exception
-	 */
-	@PostConstruct
-	public void init() throws AWTException {
-		systemTray = SystemTray.getSystemTray();
-		if (systemTray == null) {
-			logger.error("Unable to load SystemTray!");
-			throw new IllegalStateException("Unable to load SystemTray!");
-		}
+  /**
+   * Initializes the component.
+   *
+   * @throws AWTException
+   *           the aWT exception
+   */
+  @PostConstruct
+  public void init() throws AWTException {
+    systemTray = SystemTray.get();
+    if (systemTray == null) {
+      logger.error("Unable to load SystemTray!");
+      throw new IllegalStateException("Unable to load SystemTray!");
+    }
 
-		systemTray.setIcon(MainUI.class.getResource("/graphics/swap/icon.gif"));
-		systemTray.setStatus("Smart Web Accessibility Proxy");
+    systemTray.setImage(MainUI.class.getResource("/graphics/swap/icon.gif"));
+    systemTray.setStatus("Smart Web Accessibility Proxy");
 
-		systemTray.addMenuEntry("Basic settings", (t, m) -> basicConfiguration());
-		systemTray.addMenuEntry("Advanced settings", (t, m) -> advancedConfiguration());
-		systemTray.addMenuEntry("Exit", (t, m) -> {
-			environment.stop();
-			System.exit(0);
-		});
-	}
+    systemTray.getMenu().add(new MenuItem("Basic settings", e -> basicConfiguration()));
+    systemTray.getMenu().add(new MenuItem("Basic settings", e -> basicConfiguration()));
+    systemTray.getMenu().add(new MenuItem("Advanced settings", e -> advancedConfiguration()));
+    systemTray.getMenu().add(new MenuItem("Exit", e -> {
+      environment.stop();
+      System.exit(0);
+    }));
+  }
 }

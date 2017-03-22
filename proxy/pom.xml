@@ -56,8 +56,14 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dorkbox</groupId>
-			<artifactId>SystemTray</artifactId> 
-			<version>2.20</version>
+			<artifactId>SystemTray</artifactId>
+			<version>3.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>logback-classic</artifactId>
+					<groupId>ch.qos.logback</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
