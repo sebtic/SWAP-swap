@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import org.projectsforge.swap.core.encoding.css.CSSEncodingDetector;
 import org.projectsforge.swap.core.http.CacheManager;
 import org.projectsforge.swap.core.http.CircularRedirectionException;
@@ -50,7 +51,7 @@ import org.springframework.stereotype.Component;
 // http://reference.sitepoint.com/css/conditionalcomments
 /**
  * A visitor class which collects the stylesheets of a document.
- * 
+ *
  * @author Sébastien Aupetit
  */
 @Component
@@ -58,7 +59,7 @@ public class StylesheetsCollector {
 
   /**
    * The Class InternalVisitor.
-   * 
+   *
    * @author Sébastien Aupetit
    */
   class InternalVisitor extends Visitor<Node, StylesheetState, List<Stylesheet>> {
@@ -72,9 +73,11 @@ public class StylesheetsCollector {
 
     /**
      * Import stylesheet.
-     * 
-     * @param state the state
-     * @param uri the uri
+     *
+     * @param state
+     *          the state
+     * @param uri
+     *          the uri
      * @return the list
      */
     private List<Stylesheet> importStylesheet(final StylesheetState state, final String uri) {
@@ -88,17 +91,18 @@ public class StylesheetsCollector {
         if (response.getStatusCode() == 200) {
           try {
             final CSSEncodingDetector detector = new CSSEncodingDetector();
-            detector.setHttpHeaderEncoding(response.getHeaders()
-                .getFirstValue(ResponseHeaderConstants.CONTENT_ENCODING));
+            detector
+                .setHttpHeaderEncoding(response.getHeaders().getFirstValue(ResponseHeaderConstants.CONTENT_ENCODING));
             detector.setParentEncoding(state.encoding);
             detector.detectEncoding(response.getContent());
 
-            final Stylesheet stylesheet = CssParser.parseStylesheet(detector, response.getContent(), response
-                .getRequest().getURL().toExternalForm());
+            final Stylesheet stylesheet = CssParser.parseStylesheet(detector, response.getContent(),
+                response.getRequest().getURL().toExternalForm());
             final List<Stylesheet> result = new ArrayList<>();
             result.add(stylesheet);
-            result.addAll(processStylesheet(new StylesheetState(response.getRequest(), state.media, stylesheet
-                .getEncoding().getEncoding()), stylesheet));
+            result.addAll(processStylesheet(
+                new StylesheetState(response.getRequest(), state.media, stylesheet.getEncoding().getEncoding()),
+                stylesheet));
             return result;
           } catch (final CSSParsingException e) {
             logger.warn("Cannot parse response for " + response.getRequest().getURL(), e.getMessage());
@@ -114,9 +118,11 @@ public class StylesheetsCollector {
 
     /**
      * Process stylesheet.
-     * 
-     * @param state the state
-     * @param stylesheet the stylesheet
+     *
+     * @param state
+     *          the state
+     * @param stylesheet
+     *          the stylesheet
      * @return the list
      */
     private List<Stylesheet> processStylesheet(final StylesheetState state, final Stylesheet stylesheet) {
@@ -132,9 +138,11 @@ public class StylesheetsCollector {
 
     /**
      * Visit which converts body tag stylizing attributes into a CSS stylesheet.
-     * 
-     * @param element the element
-     * @param state the state
+     *
+     * @param element
+     *          the element
+     * @param state
+     *          the state
      * @return the list
      */
     List<Stylesheet> visit(final BODYElement element, final StylesheetState state) {
@@ -178,9 +186,11 @@ public class StylesheetsCollector {
     // stylesheets (not alternative)
     /**
      * Visit.
-     * 
-     * @param element the element
-     * @param state the state
+     *
+     * @param element
+     *          the element
+     * @param state
+     *          the state
      * @return the list
      */
     List<Stylesheet> visit(final LINKElement element, final StylesheetState state) {
@@ -193,7 +203,7 @@ public class StylesheetsCollector {
 
       if (relAttribute != null) {
         relAttribute = relAttribute.trim();
-      };
+      }
       if (titleAttribute != null) {
         titleAttribute = titleAttribute.trim();
       }
@@ -244,9 +254,11 @@ public class StylesheetsCollector {
 
     /**
      * Visit.
-     * 
-     * @param node the node
-     * @param state the state
+     *
+     * @param node
+     *          the node
+     * @param state
+     *          the state
      * @return the list
      * @throws RecursiveTaskExecutorException
      */
@@ -256,21 +268,17 @@ public class StylesheetsCollector {
 
     /**
      * Visit.
-     * 
-     * @param element the element
-     * @param state the state
+     *
+     * @param element
+     *          the element
+     * @param state
+     *          the state
      * @return the list
      */
     List<Stylesheet> visit(final STYLEElement element, final StylesheetState state) {
-      final String typeAttribute = element.getAttribute(STYLEElement.TYPE);
       final String mediaAttribute = element.getAttribute(STYLEElement.MEDIA);
 
       // we are in head since sub node of BODY are not visited
-
-      // check type
-      if (!"text/css".equalsIgnoreCase(typeAttribute)) {
-        return Collections.emptyList();
-      }
 
       // check media
       if (mediaAttribute != null) {
@@ -315,7 +323,7 @@ public class StylesheetsCollector {
 
   /**
    * The Class StylesheetState.
-   * 
+   *
    * @author Sébastien Aupetit
    */
   static class StylesheetState {
@@ -331,10 +339,13 @@ public class StylesheetsCollector {
 
     /**
      * Instantiates a new stylesheet state.
-     * 
-     * @param baseRequest the base request
-     * @param media the media
-     * @param encoding the encoding
+     *
+     * @param baseRequest
+     *          the base request
+     * @param media
+     *          the media
+     * @param encoding
+     *          the encoding
      */
     public StylesheetState(final Request baseRequest, final ICaseString media, final String encoding) {
       this.baseRequest = baseRequest;
@@ -345,8 +356,9 @@ public class StylesheetsCollector {
 
   /**
    * Merge lists.
-   * 
-   * @param stylesheets the stylesheets
+   *
+   * @param stylesheets
+   *          the stylesheets
    * @return the list
    */
   private static List<Stylesheet> mergeLists(final List<Stylesheet>[] stylesheets) {
@@ -374,10 +386,13 @@ public class StylesheetsCollector {
 
   /**
    * Gets the stylesheets.
-   * 
-   * @param document the document
-   * @param baseRequest the base request
-   * @param media the media
+   *
+   * @param document
+   *          the document
+   * @param baseRequest
+   *          the base request
+   * @param media
+   *          the media
    * @return the stylesheets
    * @throws RecursiveTaskExecutorException
    */
